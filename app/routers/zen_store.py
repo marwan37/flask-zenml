@@ -11,7 +11,7 @@
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
 from flask import Blueprint, jsonify
-from app.utils.zen_client import get_zenml_api_token
+from app.utils.global_config import fetch_global_configuration
 
 bp = Blueprint("zen_store", __name__, url_prefix="/zen_store")
 
@@ -24,7 +24,8 @@ def get_api_token():
     Returns:
         JSON response containing the 'api_token' if present, or 'error' message if the token is missing.
     """
-    api_token = get_zenml_api_token()
+    global_config = fetch_global_configuration()
+    api_token = global_config.get("store", {}).get("api_token")
     if not api_token:
         return jsonify({"error": "API token is missing in ZenML's global configuration."}), 404
     return jsonify({"api_token": api_token})

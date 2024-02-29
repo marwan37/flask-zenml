@@ -16,8 +16,6 @@ from flask import Blueprint, request, jsonify
 from urllib.parse import urlparse
 from zenml.zen_server.deploy.deployer import ServerDeployer
 from zenml.zen_server.utils import get_active_server_details
-
-from app.utils.zen_client import call_zenml_api
 from app.utils.global_config import fetch_store_info, fetch_active_user
 from app.models.server_status import ServerStatusModel
 from zenml.cli import web_login
@@ -113,14 +111,3 @@ def status():
     # Convert the Pydantic model to a dict before serializing to JSON
     return jsonify(server_status.dict(by_alias=True))
 
-
-@bp.route("/info", methods=["GET"])
-def get_server_info():
-    """
-    Fetches information about the ZenML server.
-
-    Returns:
-        JSON response with server information.
-    """
-    server_info = call_zenml_api("info")
-    return jsonify(server_info)
