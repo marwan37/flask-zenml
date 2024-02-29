@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "flask-zenml"
+version = "0.1.0"
+description = ""
+authors = ["Marwan Zaarab <marwan.zaarab@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Flask = "3.0.2"
+pydantic = "^2.6.3"
+zenml = "0.55.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
