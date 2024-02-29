@@ -10,7 +10,18 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-class Config:
-    # Other configuration settings
-    # https://13c204fc-zenml.cloudinfra.zenml.io
-    ZENML_API_URL = 'https://13c204fc-zenml.cloudinfra.zenml.io/api/v1'
+FROM python:3.11-slim
+
+WORKDIR /app
+COPY . /app
+
+RUN pip install poetry
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-dev
+
+EXPOSE 3001
+ENV FLASK_APP=main.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=3001
+
+CMD ["flask", "run"]
