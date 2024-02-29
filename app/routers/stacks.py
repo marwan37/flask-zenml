@@ -24,6 +24,12 @@ bp = Blueprint("stacks", __name__, url_prefix="/stacks")
 @bp.route("", methods=["GET"])
 @bp.route("/", methods=["GET"])
 def fetch_stacks():
+    """
+    Fetches all ZenML stacks associated with the active user.
+
+    Returns:
+        JSON response with a list of stack models or 'error' on failure.
+    """
     active_user_json = fetch_active_user()
     active_user = json.loads(active_user_json)
     user_id = active_user["id"]
@@ -48,6 +54,12 @@ def fetch_stacks():
 
 @bp.route("/active_stack", methods=["GET"])
 def active_stack():
+    """
+    Retrieves the currently active ZenML stack for the user.
+
+    Returns:
+        JSON response with the active stack model or 'error' on failure.
+    """
     client = Client()
     try:
         current_stack = client.active_stack_model
@@ -70,6 +82,15 @@ def active_stack():
 
 @bp.route('/rename', methods=['POST'])
 def rename_stack():
+    """
+    Renames a specified ZenML stack.
+
+    Expects a JSON payload with 'stack_name_or_id' (the current name or ID of the stack) and
+    'new_stack_name' (the new name for the stack).
+
+    Returns:
+        JSON response with 'message' indicating success or 'error' on failure.
+    """
     data = request.json
     stack_name_or_id = data.get('stack_name_or_id')
     new_stack_name = data.get('new_stack_name')
@@ -90,6 +111,14 @@ def rename_stack():
 
 @bp.route('/activate', methods=['POST'])
 def set_active_stack():
+    """
+    Sets a specified ZenML stack as active.
+
+    Expects a JSON payload with 'stack_name_or_id' specifying the stack to activate.
+
+    Returns:
+        JSON response with 'message' indicating success or 'error' on failure.
+    """
     data = request.json
     stack_name_or_id = data.get('stack_name_or_id')
 
@@ -106,6 +135,15 @@ def set_active_stack():
 
 @bp.route('/copy', methods=['POST'])
 def copy_stack():
+    """
+    Copies a specified ZenML stack to a new stack with a given name.
+
+    Expects a JSON payload with 'source_stack_name_or_id' (the name or ID of the stack to copy) and
+    'target_stack' (the name for the new copied stack).
+
+    Returns:
+        JSON response with 'message' indicating success or 'error' on failure.
+    """
     data = request.json
     source_stack_name_or_id = data.get('source_stack_name_or_id')
     target_stack_name = data.get('target_stack')

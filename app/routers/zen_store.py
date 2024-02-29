@@ -18,6 +18,12 @@ bp = Blueprint("zen_store", __name__, url_prefix="/zen_store")
 
 @bp.route('/api_token', methods=['GET'])
 def get_api_token():
+    """
+    Retrieves the API token from ZenML's global configuration.
+
+    Returns:
+        JSON response containing the 'api_token' if present, or 'error' message if the token is missing.
+    """
     api_token = get_zenml_api_token()
     if not api_token:
         return jsonify({"error": "API token is missing in ZenML's global configuration."}), 404

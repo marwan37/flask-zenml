@@ -42,13 +42,12 @@ def fetch_global_configuration():
     return json.loads(json_string)
 
 
-def set_store_configuration(remote_url: str, access_token: str, user_id: str):
+def set_store_configuration(remote_url: str, access_token: str):
     """Sets the ZenML global configuration to use a remote REST store.
 
     Args:
         remote_url (str): The URL of the remote ZenML server.
         access_token (str): The access token retrieved via OAuth2 for authentication.
-        user_id (str): The ID of the user, fetched from the utility file.
     """
     gc = GlobalConfiguration()
     new_store_config = RestZenStoreConfiguration(
@@ -58,8 +57,6 @@ def set_store_configuration(remote_url: str, access_token: str, user_id: str):
         verify_ssl=True
     )
 
-    # gc.store = new_store_config
-    # gc.user_id = user_id
     gc.set_store(new_store_config)
 
 

@@ -14,7 +14,21 @@ from app.models.stack import StackComponentModel
 
 
 def serialize_stack_component(component) -> StackComponentModel:
-    """Serializes a single stack component to a StackComponentModel instance."""
+    """
+    Serializes a ZenML stack component object to a StackComponentModel instance.
+
+    This function takes a ZenML stack component (such as an artifact store,
+    orchestrator, etc.) and transforms it into a StackComponentModel object
+    which includes its ID, name, flavor, and type.
+
+    Parameters:
+        component: The stack component to serialize. Expected to have 'id',
+                   'name', 'flavor', and 'type' attributes.
+
+    Returns:
+        A StackComponentModel instance containing the serialized data of the
+        input stack component.
+    """
     return StackComponentModel(
         id=str(component.id),
         name=component.name,

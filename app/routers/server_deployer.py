@@ -28,6 +28,15 @@ bp = Blueprint("server_deployer", __name__, url_prefix="/server_deployer")
 
 @bp.route("/connect", methods=["POST"])
 def connect():
+    """
+    Initiates a connection to the ZenML server using web-based authentication.
+    Expects a JSON payload with:
+        'url' (the server URL)
+        'verify_ssl' (optional SSL verification flag).
+
+    Returns:
+        JSON response with 'message' indicating success and an 'access_token', or 'error' on failure.
+    """
     data = request.json
     url = data.get("url")
     verify_ssl = data.get("verify_ssl", True)
@@ -54,6 +63,12 @@ def connect():
 
 @bp.route("/disconnect", methods=["POST"])
 def disconnect():
+    """
+    Disconnects from the ZenML server and cleans up any associated configurations.
+
+    Returns:
+       JSON response with 'message' indicating successful disconnection, or 'error' on failure.
+    """
     try:
         deployer = ServerDeployer()
         deployer.disconnect_from_server()
@@ -64,6 +79,12 @@ def disconnect():
 
 @bp.route("/status", methods=["GET"])
 def status():
+    """
+    Retrieves the current status of the ZenML server, including connectivity and store information.
+
+    Returns:
+       JSON response with the server status model or 'error' on failure.
+    """
     store_info = fetch_store_info()
     store_type = store_info["store_type"]
     store_url = store_info["store_url"]
@@ -95,6 +116,11 @@ def status():
 
 @bp.route("/info", methods=["GET"])
 def get_server_info():
-    """Get information about the ZenML server."""
+    """
+    Fetches information about the ZenML server.
+
+    Returns:
+        JSON response with server information.
+    """
     server_info = call_zenml_api("info")
     return jsonify(server_info)

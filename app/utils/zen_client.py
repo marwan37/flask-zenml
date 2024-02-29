@@ -16,7 +16,18 @@ from app.utils.global_config import fetch_global_configuration
 
 
 def call_zenml_api(endpoint, method='get', data=None, params=None):
-    """Generic function to call ZenML API endpoints."""
+    """
+    Calls a specified ZenML API endpoint.
+
+    Parameters:
+        endpoint (str): The API endpoint to call.
+        method (str): HTTP method to use for the call. Defaults to 'get'.
+        data (dict): Optional JSON data to send in the body of the request.
+        params (dict): Optional parameters to append to the URL.
+
+    Returns:
+        The JSON response from the API call.
+    """
     base_url = app.config['ZENML_API_URL']
     url = f"{base_url}/{endpoint}"
     api_token = get_zenml_api_token()
@@ -30,6 +41,15 @@ def call_zenml_api(endpoint, method='get', data=None, params=None):
 
 
 def get_zenml_api_token():
+    """
+    Fetches the API token from ZenML's global configuration.
+
+    Returns:
+        The API token as a string.
+
+    Raises:
+        ValueError: If the API token is missing in ZenML's global configuration.
+    """
     global_config = fetch_global_configuration()
     api_token = global_config.get("store", {}).get("api_token")
     if not api_token:
